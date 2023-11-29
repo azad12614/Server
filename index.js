@@ -23,6 +23,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     const productList = client.db("products").collection("items");
+    const memberList = client.db("team").collection("member");
     
     //API
     app.post("/add-product", async (req, res) => {
@@ -62,6 +63,47 @@ async function run() {
       const productId = { _id: new ObjectId(id) };
       // delete mongodb
       const result = await productList.deleteOne(productId);
+      res.send(result);
+    });
+
+    // API 6
+    app.post("/add-member", async (req, res) => {
+      const member = req.body;
+      // insert mongodb
+      const result = await memberList.insertOne(member);
+      res.send(result);
+    });
+
+    // API 7
+    app.get("/all-members", async (req, res) => {
+      const result = await memberList.find({}).toArray();
+      res.send(result);
+    });
+
+    // API 8
+    app.get("/member/:id", async (req, res) => {
+      const id = req.params.id;
+      const result = await memberList.findOne({ _id: new ObjectId(id) });
+      res.send(result);
+    });
+
+    // API 8
+    app.put("/update-member/:id", async (req, res) => {
+      const id = req.params.id;
+      const memberId = { _id: new ObjectId(id) };
+      const memberUpdate = req.body;
+      const updates = { $set: memberUpdate };
+      // update mongodb
+      const result = await memberList.updateOne(memberId, updates);
+      res.send(result);
+    });
+
+    // API 10
+    app.delete("/delete-member/:id", async (req, res) => {
+      const id = req.params.id;
+      const memberId = { _id: new ObjectId(id) };
+      // delete mongodb
+      const result = await memberList.deleteOne(memberId);
       res.send(result);
     });
 
