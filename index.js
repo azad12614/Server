@@ -24,6 +24,7 @@ async function run() {
   try {
     const productList = client.db("products").collection("items");
     const memberList = client.db("team").collection("member");
+    const msgList = client.db("inbox").collection("message");
     
     //API
     app.post("/add-product", async (req, res) => {
@@ -104,6 +105,14 @@ async function run() {
       const memberId = { _id: new ObjectId(id) };
       // delete mongodb
       const result = await memberList.deleteOne(memberId);
+      res.send(result);
+    });
+
+    //API 11
+    app.post("/contact-us", async (req, res) => {
+      const msg = req.body;
+      // insert mongodb
+      const result = await msgList.insertOne(msg);
       res.send(result);
     });
 
