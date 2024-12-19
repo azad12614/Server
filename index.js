@@ -9,7 +9,7 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.jkwgrzb.mongodb.net/?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.jkwgrzb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -22,10 +22,10 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    const productList = client.db("products").collection("items");
-    const memberList = client.db("team").collection("member");
-    const msgList = client.db("inbox").collection("message");
-    
+    const productList = client.db("katastrophen").collection("products");
+    const memberList = client.db("katastrophen").collection("team");
+    const msgList = client.db("katastrophen").collection("inbox");
+
     //API
     app.post("/add-product", async (req, res) => {
       const product = req.body;
